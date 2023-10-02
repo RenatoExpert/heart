@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Heart rate monito</title>
+	</head>
+	<body>
+		<h3>
+			Heart frequency
+		</h3>
+		<p>
+			Right-click on screen or press Spacebar to count a beat
+		</p>
+		<p>
+			<strong>
+				<spam id='frame'></spam>
+			</strong>
+			bpm
+		</p>
+		<script>
+			//	HTML
+			frame = document.getElementById('frame');
+
+			document.addEventListener("click", beat);
+			document.addEventListener("keyup", e => {
+				console.log(e);
+				if(e.code == "Space") {
+					console.log('a');
+					beat();
+				}
+			});
+
+			//	Code
+			beats = [];
+
+			function update() {
+				let sample = beats.slice(-5);
+				let avg_time = (sample[4] - sample[0]) / 5;
+				//frame.innerHTML = avg_time;
+				let frequency = 60e3 / avg_time;
+				if(typeof frequency == 'number' && !isNaN(frequency)) {
+					console.error(typeof frequency, frequency);
+					frame.innerHTML = Math.round(frequency);
+				}
+			}
+
+			function beat() {
+				console.debug('beat');
+				let beat = new Date().getTime();
+				beats.push(beat);
+				update();
+			}
+		</script>
+	</body>
+</html>
+
